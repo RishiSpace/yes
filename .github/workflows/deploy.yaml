@@ -45,14 +45,15 @@ jobs:
 
       # Step 4: Run the build script for Vite
       - name: Build Project 🏗️
-        run: npm run build -- --base=/${{ github.event.repository.name }}/
-        # We pass --base=/${{ github.event.repository.name }}/ to npm run build.
-        # The '--' passes the flag to the underlying 'vite build' command.
-        # This sets the correct asset paths for GitHub Pages,
-        # fixing the "white screen" issue.
-        # ${{ github.event.repository.name }} will be your repo name (e.g., 'yes').
+        env: # Set an env var for Vite to use
+          VITE_PUBLIC_URL: /yes/
+        run: npm run build -- --base=${VITE_PUBLIC_URL}
+        # We pass the VITE_PUBLIC_URL to two places:
+        # 1. The '--base' flag, so Vite builds assets with the right path.
+        # 2. 'import.meta.env.VITE_PUBLIC_URL' (inside your React code),
+        #    so React Router knows the base path.
 
-      # Step 4.5 (NEW): Create 404.html fallback for SPA routing
+      # Step 4.5: Create 404.html fallback for SPA routing
       - name: Create 404.html for SPA Fallback 📄
         run: cp dist/index.html dist/404.html
         # This copies the index.html to 404.html.

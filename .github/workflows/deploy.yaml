@@ -7,7 +7,7 @@
 #
 # On the next push to 'main', this action will run.
 
-name: Deploy YES Site
+name: Deploy YES
 
 # Triggers the workflow on push events to the 'main' branch
 on:
@@ -43,11 +43,14 @@ jobs:
         # 'npm ci' is recommended for CI environments for faster, reliable installs
         run: npm ci
 
-      # Step 4: Run the build script
+      # Step 4: Run the build script for Vite
       - name: Build Project 🏗️
-        run: npm run build
-        # This assumes your 'package.json' has a "build" script
-        # e.g., "build": "react-scripts build" or "build": "next build"
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
+        # We pass --base=/${{ github.event.repository.name }}/ to npm run build.
+        # The '--' passes the flag to the underlying 'vite build' command.
+        # This sets the correct asset paths for GitHub Pages,
+        # fixing the "white screen" issue.
+        # ${{ github.event.repository.name }} will be your repo name (e.g., 'yes').
 
       # Step 5: Deploy the build output to the 'deploy' branch
       - name: Deploy to 'deploy' branch 🚀

@@ -7,7 +7,7 @@
 #
 # On the next push to 'main', this action will run.
 
-name: Deploy YES
+name: Deploy YES Site
 
 # Triggers the workflow on push events to the 'main' branch
 on:
@@ -17,6 +17,10 @@ on:
 
 jobs:
   build-and-deploy:
+    # Add permissions for the GITHUB_TOKEN to allow writing to the repo
+    permissions:
+      contents: write
+
     # Use the latest Ubuntu runner
     runs-on: ubuntu-latest
 
@@ -59,3 +63,4 @@ jobs:
           
           # This will automatically create the 'deploy' branch if it doesn't exist
           # and force-push the new build, overwriting the previous contents.
+

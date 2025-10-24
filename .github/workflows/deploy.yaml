@@ -52,6 +52,14 @@ jobs:
         # fixing the "white screen" issue.
         # ${{ github.event.repository.name }} will be your repo name (e.g., 'yes').
 
+      # Step 4.5 (NEW): Create 404.html fallback for SPA routing
+      - name: Create 404.html for SPA Fallback 📄
+        run: cp dist/index.html dist/404.html
+        # This copies the index.html to 404.html.
+        # When GitHub Pages can't find a sub-route (e.g., /yes/about),
+        # it serves the 404.html file, which is your app.
+        # Your app's router then correctly loads the /about page.
+
       # Step 5: Deploy the build output to the 'deploy' branch
       - name: Deploy to 'deploy' branch 🚀
         uses: JamesIves/github-pages-deploy-action@v4
